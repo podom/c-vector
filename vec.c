@@ -116,6 +116,11 @@ void _vector_erase(vector vec, vec_type_t type_size, vec_size_t pos, vec_size_t 
 	h->size -= len;
 }
 
+void vector_clear(vector vec) {
+	vector_header* h = vector_get_header(vec);
+	h->size = 0;
+}
+
 void _vector_remove(vector vec, vec_type_t type_size, vec_size_t pos)
 {
 	_vector_erase(vec, type_size, pos, 1);

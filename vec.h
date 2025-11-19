@@ -40,13 +40,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifdef __cplusplus
 extern "C" {
+
 #endif
 
 #include <stdbool.h>
 #include <stdlib.h>
 
 // generic type for internal use
-typedef void* vector;
+typedef void *vector;
 // number of elements in a vector
 typedef size_t vec_size_t;
 // number of bytes for a type
@@ -119,9 +120,9 @@ vector vector_create(void);
 
 void vector_free(vector vec);
 
-void* _vector_add_dst(vector* vec_addr, vec_type_t type_size);
+void *_vector_add_dst(vector *vec_addr, vec_type_t type_size);
 
-void* _vector_insert_dst(vector* vec_addr, vec_type_t type_size, vec_size_t pos);
+void *_vector_insert_dst(vector *vec_addr, vec_type_t type_size, vec_size_t pos);
 
 void _vector_erase(vector vec_addr, vec_type_t type_size, vec_size_t pos, vec_size_t len);
 
@@ -129,13 +130,15 @@ void _vector_remove(vector vec_addr, vec_type_t type_size, vec_size_t pos);
 
 void vector_pop(vector vec);
 
-void _vector_reserve(vector* vec_addr, vec_type_t type_size, vec_size_t capacity);
+void _vector_reserve(vector *vec_addr, vec_type_t type_size, vec_size_t capacity);
 
 vector _vector_copy(vector vec, vec_type_t type_size);
 
 vec_size_t vector_size(vector vec);
 
 vec_size_t vector_capacity(vector vec);
+
+void vector_clear(vector vec);
 
 // closing bracket for extern "C"
 #ifdef __cplusplus
