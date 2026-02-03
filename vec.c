@@ -44,7 +44,11 @@ vector_header* vector_get_header(vector vec) { return &((vector_header*)vec)[-1]
 
 vector vector_create(void)
 {
-	vector_header* h = (vector_header*)malloc(sizeof(vector_header));
+	vector_header* h = malloc(sizeof(vector_header));
+	if (!h)
+	{
+		return NULL;
+	}
 	h->capacity = 0;
 	h->size = 0;
 
@@ -61,6 +65,10 @@ vector_header* vector_realloc(vector_header* h, vec_type_t type_size)
 {
 	vec_size_t new_capacity = (h->capacity == 0) ? 1 : h->capacity * 2;
 	vector_header* new_h = (vector_header*)realloc(h, sizeof(vector_header) + new_capacity * type_size);
+	if (!new_h)
+	{
+		return NULL;
+	}
 	new_h->capacity = new_capacity;
 
 	return new_h;
@@ -78,6 +86,11 @@ void* _vector_add_dst(vector* vec_addr, vec_type_t type_size)
 	if (!vector_has_space(h))
 	{
 		h = vector_realloc(h, type_size);
+		if (!h)
+		{
+			*vec_addr = NULL;
+			return NULL;
+		}
 		*vec_addr = h->data;
 	}
 
@@ -94,6 +107,11 @@ void* _vector_insert_dst(vector* vec_addr, vec_type_t type_size, vec_size_t pos)
 	if (!vector_has_space(h))
 	{
 		h = vector_realloc(h, type_size);
+		if (!h)
+		{
+			*vec_addr = NULL;
+			return NULL;
+		}
 		*vec_addr = h->data;
 	}
 	// move trailing elements
@@ -137,6 +155,11 @@ void _vector_reserve(vector* vec_addr, vec_type_t type_size, vec_size_t capacity
 	}
 
 	h = (vector_header*)realloc(h, sizeof(vector_header) + capacity * type_size);
+	if (!h)
+	{
+		*vec_addr = NULL;
+		return;
+	}
 	h->capacity = capacity;
 	*vec_addr = &h->data;
 }
@@ -146,6 +169,10 @@ vector _vector_copy(vector vec, vec_type_t type_size)
 	vector_header* h = vector_get_header(vec);
 	size_t alloc_size = sizeof(vector_header) + h->size * type_size;
 	vector_header* copy_h = (vector_header*)malloc(alloc_size);
+	if (!copy_h)
+	{
+		return NULL;
+	}
 	memcpy(copy_h, h, alloc_size);
 	copy_h->capacity = copy_h->size;
 
